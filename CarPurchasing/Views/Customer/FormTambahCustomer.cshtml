@@ -1,0 +1,49 @@
+@model CarPurchasing_DAL.Models.Dto.Req.ReqCustomerDto
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Customer";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Tambah Data Customer</h1>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container">
+
+        <form asp-controller="Customer" asp-action="TambahCustomer" method="post" class="mt-5">
+          <input type="hidden" asp-for="Id"/>
+          <div class="mb-3">
+            <label for="Name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="Name" asp-for="Name" autocomplete="off" placeholder="Name">
+          </div>
+          <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input type="text" class="form-control" id="Email" asp-for="Email" autocomplete="off" placeholder="Email">
+          </div>
+          <div class="mb-3">
+            <label for="Address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="Address" asp-for="Address" autocomplete="off" placeholder="Address">
+          </div>
+          <div class="mb-3">
+            <label for="Gender" class="form-label">Gender</label>
+            <input type="text" class="form-control" id="Gender" asp-for="Gender" autocomplete="off" placeholder="Gender">
+          </div>
+          <div class="mb-3">
+            <label for="Occupancy" class="form-label">Occupancy</label>
+            <input type="text" class="form-control" id="Occupancy" asp-for="Occupancy" autocomplete="off" placeholder="Occupancy">
+          </div>
+          <div class="mb-3">
+            <label for="Salary" class="form-label">Salary</label>
+            <input type="text" class="form-control" id="Salary" asp-for="Salary" autocomplete="off" placeholder="Salary">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </section>
+    <!-- /.content -->
+</div>

@@ -1,0 +1,261 @@
+@model List<CarPurchasing_DAL.Models.Dto.Res.ResCarDto>
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Mobil";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Halaman Master Mobil</h1>
+    </div>
+    <div class="content text-right">
+      <a asp-controller="Mobil" asp-action="FormTambahMobil" class="btn btn-primary">Tambah Data</a>
+    </div>
+    <br>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Engine Size</th>
+            <th scope="col">Fuel Type</th>
+            <th scope="col">Manufacture Year</th>
+            <th scope="col">Cd Chassis</th>
+            <th scope="col">Cd Engine</th>
+            <th scope="col">Nama Brand</th>
+            <th scope="col">Nama Type</th>
+            <th scope="col">Nama Usage</th>
+            <th scope="col">Nama Model</th>
+
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var dataCar in Model)
+          {
+            <tr>
+              <td>@dataCar.EngineSize</td>
+              <td>@dataCar.FuelType</td>
+              <td>@dataCar.ManufactureYear</td>
+              <td>@dataCar.CdChassis</td>
+              <td>@dataCar.CdEngine</td>
+              <td>@dataCar.NamaBrand</td>
+              <td>@dataCar.NamaType</td>
+              <td>@dataCar.NamaUsage</td>
+              <td>@dataCar.NamaModel</td>
+              <td>
+                <a 
+                  data-id="@dataCar.Id" 
+                  data-engine-size="@dataCar.EngineSize"
+                  data-fuel-type="@dataCar.FuelType"
+                  data-manufacture-year="@dataCar.ManufactureYear"
+                  data-cd-chassis="@dataCar.CdChassis"
+                  data-cd-engine="@dataCar.CdEngine"
+                  href="#" class="btn btn-warning editCar"
+                >Edit</a>
+                <a 
+                  data-id-delete="@dataCar.Id" 
+                  data-cd-engine-delete="@dataCar.CdEngine" 
+                  href="#" class="btn btn-danger deleteCar"
+                >Delete</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form method="post" id="formDeleteCar">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Yakin ingin menghapus <b>mobil cd-engine </b>   <b id="uNameDeleted"></b>?
+          <input type="hidden" name="Id" id="idCarDelete">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Hapus Data</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalEdit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" id="formEditCar">
+        <div class="modal-header">
+            <h5 class="modal-title">Konfirmasi Edit</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="Id" id="idCarEdit" />
+            <div class="mb-3">
+                <label class="form-label">Engine Size</label>
+                <input type="text" class="form-control" name="EngineSize" id="EngineSize" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fuel Type</label>
+                <input type="text" class="form-control" id="FuelType" name="FuelType"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Manufacture Year</label>
+                <input type="text" class="form-control" name="ManufactureYear" id="ManufactureYear" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Cd Chassis</label>
+                <input type="text" class="form-control" id="CdChassis"  name="CdChassis"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Cd Engine</label>
+                <input type="text" class="form-control" name="CdEngine" id="CdEngine" />
+            </div>
+            <div class="mb-3">
+            <label class="form-label">
+                Brand
+            </label>
+            <select class="form-select custom-select" id="BrandId" name="BrandId">
+                <option value="0">--Select Brand--</option>
+                @foreach (var brand in ViewBag.dataBrand)
+                {
+                    <option value="@brand.Id">@brand.Name</option>
+                }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Type
+            </label>
+            <select class="form-select custom-select" id="TypeId" name="TypeId">
+                <option value="0">--Select Type--</option>
+                @foreach (var type in ViewBag.dataType)
+                {
+                    <option value="@type.Id">@type.Name</option>
+                }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Usage
+            </label>
+            <select class="form-select custom-select" id="UsageId" name="UsageId">
+                <option value="0">--Select Usage--</option>
+                @foreach (var usage in ViewBag.dataUsage)
+                {
+                    <option value="@usage.Id">@usage.Name</option>
+                }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Model
+            </label>
+            <select class="form-select custom-select" id="ModelId" name="ModelId">
+                <option value="0">--Select Model--</option>
+                @foreach (var datamodel in ViewBag.dataModel)
+                {
+                    <option value="@datamodel.Id">@datamodel.Name</option>
+                }
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Edit Data</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script>
+    $(document).ready(function () {
+      $(".deleteCar").on("click", function (e) {
+          e.preventDefault();
+          var idDelete = $(this).data("idDelete");
+          var engineDeleted = $(this).data("cdEngineDelete");
+
+          var myModalDelete = new bootstrap.Modal(document.getElementById("modalDelete"))
+          myModalDelete.show();
+          $("#uNameDeleted").text(engineDeleted);
+
+          $("#idCarDelete").val(idDelete);
+
+          $("#formDeleteCar").off("submit");
+          $("#formDeleteCar").on("submit", function (e) {
+              e.preventDefault();
+              let formDataDeleteCar = new FormData(document.getElementById("formDeleteCar"))
+              $.ajax({
+                  url: "/Mobil/DeleteMobil",
+                  type: "delete",
+                  data: formDataDeleteCar,
+                  contentType: false,
+                  processData: false,
+                  headers: {
+                      "RequestVerificationToken": $('#formDeleteCar input:hidden[name="__RequestVerificationToken"]').val()
+                  },
+                  success: function (res) {
+                      console.log("Berhasil Delete Data");
+                      myModalDelete.hide();
+                      window.location.href = "/Mobil/Index";
+                  },
+                  error: function (jqXHR) {
+                      console.log(jqXHR.ResponseText);
+                  }
+              })
+          })
+      })
+
+      $(".editCar").on("click", function (e) {
+          e.preventDefault();        
+          var myModal = new bootstrap.Modal(document.getElementById("modalEdit"))
+          myModal.show();
+          
+          $("#idCarEdit").val($(this).data("id"));
+          $("#CdEngine").val($(this).data("cdEngine"));
+          $("#ManufactureYear").val($(this).data("manufactureYear"));
+          $("#EngineSize").val($(this).data("engineSize"));
+          $("#CdChassis").val($(this).data("cdChassis"));
+          $("#FuelType").val($(this).data("fuelType"));
+
+          $("#formEditCar").off("submit");
+          $("#formEditCar").on("submit", function (e) {
+              e.preventDefault();
+              let formDataEditCar = new FormData(document.getElementById("formEditCar"))
+              $.ajax({
+                  url: "/Mobil/EditMobil",
+                  type: "post",
+                  data: formDataEditCar,
+                  contentType: false,
+                  processData: false,
+                  headers: {
+                      "RequestVerificationToken": $('#formEditCar input:hidden[name="__RequestVerificationToken"]').val()
+                  },
+                  success: function (res) {
+                    console.log("Berhasil Edit Data");
+                    myModal.hide();
+                    window.location.href = "/Mobil/Index";
+                  },
+                  error: function (jqXHR) {
+                    console.log(jqXHR.responseText);
+                  }
+              })
+          })
+      })
+    })
+  </script>
+}

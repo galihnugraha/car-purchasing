@@ -1,0 +1,52 @@
+@model List<CarPurchasing_DAL.Models.Dto.Res.ResTagihanDto>
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Tagihan";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Halaman Master Tagihan</h1>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Tenor</th>
+            <th scope="col">Down Payment</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Price</th>
+            <th scope="col">Payment Status</th>
+            <th scope="col">Nama Brand</th>
+            <th scope="col">Nama Cust</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var dataTagihan in Model)
+          {
+            <tr>
+              <td>@dataTagihan.Tenor</td>
+              <td>@dataTagihan.DownPayment</td>
+              <td>@dataTagihan.Tax</td>
+              <td>@dataTagihan.Price</td>
+              <td>@dataTagihan.PaymentStatus</td>
+              <td>@dataTagihan.NamaBrand</td>
+              <td>@dataTagihan.NamaCust</td>
+              @*
+                <td>
+                    <a data-id="@dataTagihan.Id" data-username="@dataTagihan.Carname" href="#" class="btn btn-danger deleteCar">Delete</a>
+                    <a data-id="@dataTagihan.Id" data-username="@dataTagihan.Carname" href="#" class="btn btn-primary editCar">Edit</a>
+                </td>
+              *@
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    <!-- /.content -->
+</div>

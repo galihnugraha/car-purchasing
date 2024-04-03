@@ -1,0 +1,93 @@
+@model CarPurchasing_DAL.Models.Dto.Req.ReqCarDto
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Mobil";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Tambah Data Mobil</h1>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container">
+
+        <form asp-controller="Mobil" asp-action="TambahMobil" method="post" class="mt-5">
+          <input type="hidden" asp-for="Id"/>
+          <div class="mb-3">
+            <label for="enginesize" class="form-label">Engine Size</label>
+            <input type="text" class="form-control" id="enginesize" asp-for="EngineSize" autocomplete="off" placeholder="Engine Size">
+          </div>
+          <div class="mb-3">
+            <label for="FuelType" class="form-label">Fuel Type</label>
+            <input type="text" class="form-control" id="FuelType" asp-for="FuelType" autocomplete="off" placeholder="Fuel Type">
+          </div>
+          <div class="mb-3">
+            <label for="ManufactureYear" class="form-label">Manufacture Year</label>
+            <input type="text" class="form-control" id="ManufactureYear" asp-for="ManufactureYear" autocomplete="off" placeholder="Manufacture Year">
+          </div>
+          <div class="mb-3">
+            <label for="CdChassis" class="form-label">Cd Chassis</label>
+            <input type="text" class="form-control" id="CdChassis" asp-for="CdChassis" autocomplete="off" placeholder="Cd Chassis">
+          </div>
+          <div class="mb-3">
+            <label for="CdEngine" class="form-label">Cd Engine</label>
+            <input type="text" class="form-control" id="CdEngine" asp-for="CdEngine" autocomplete="off" placeholder="Cd Engine">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Brand
+            </label>
+            <select class="form-select custom-select" asp-for="BrandId">
+                <option value="0">--Select Brand--</option>
+                @foreach (var brand in ViewBag.dataBrand)
+                {
+                    <option value="@brand.Id">@brand.Name</option>
+                }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Type
+            </label>
+            <select class="form-select custom-select" asp-for="TypeId">
+                <option value="0">--Select Type--</option>
+                @foreach (var type in ViewBag.dataType)
+                {
+                    <option value="@type.Id">@type.Name</option>
+                }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Usage
+            </label>
+            <select class="form-select custom-select" asp-for="UsageId">
+                <option value="0">--Select Usage--</option>
+                @foreach (var usage in ViewBag.dataUsage)
+                {
+                    <option value="@usage.Id">@usage.Name</option>
+                }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Model
+            </label>
+            <select class="form-select custom-select" asp-for="ModelId">
+                <option value="0">--Select Model--</option>
+                @foreach (var datamodel in ViewBag.dataModel)
+                {
+                    <option value="@datamodel.Id">@datamodel.Name</option>
+                }
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </section>
+    <!-- /.content -->
+</div>

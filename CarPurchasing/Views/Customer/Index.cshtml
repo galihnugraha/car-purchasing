@@ -1,0 +1,209 @@
+@model List<CarPurchasing_DAL.Models.Dto.Res.ResCustomerDto>
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Customer";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Halaman Master Customer</h1>
+    </div>
+    <div class="content text-right">
+      <a asp-controller="Customer" asp-action="FormTambahCustomer" class="btn btn-primary">Tambah Data</a>
+    </div>
+    <br>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Occupancy</th>
+            <th scope="col">Salary</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var dataCustomer in Model)
+          {
+            <tr>
+              <td>@dataCustomer.Name</td>
+              <td>@dataCustomer.Email</td>
+              <td>@dataCustomer.Address</td>
+              <td>@dataCustomer.Gender</td>
+              <td>@dataCustomer.Occupancy</td>
+              <td>@dataCustomer.Salary</td>
+              <td>
+                <a 
+                  data-id="@dataCustomer.Id"
+                  data-name="@dataCustomer.Name" 
+                  data-email="@dataCustomer.Email"
+                  data-address="@dataCustomer.Address"
+                  data-gender="@dataCustomer.Gender"
+                  data-occupancy="@dataCustomer.Occupancy"
+                  data-salary="@dataCustomer.Salary"
+                  href="#" class="btn btn-warning editCustomer"
+                >Edit</a>
+                <a 
+                  data-id="@dataCustomer.Id"
+                  data-name="@dataCustomer.Name"
+                  href="#" class="btn btn-danger deleteCustomer"
+                >Delete</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    <!-- /.content -->
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form method="post" id="formDeleteCustomer">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Yakin ingin menghapus <b id="uNameDeleted"></b>?
+          <input type="hidden" name="Id" id="idCustomerDelete">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Hapus Data</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalEdit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" id="formEditCustomer">
+        <div class="modal-header">
+            <h5 class="modal-title">Konfirmasi Edit</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="Id" id="Id"/>
+            <div class="mb-3">
+              <label for="Name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" placeholder="Name">
+            </div>
+            <div class="mb-3">
+              <label for="Email" class="form-label">Email</label>
+              <input type="text" class="form-control" id="Email" name="Email" autocomplete="off" placeholder="Email">
+            </div>
+            <div class="mb-3">
+              <label for="Address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="Address" name="Address" autocomplete="off" placeholder="Address">
+            </div>
+            <div class="mb-3">
+              <label for="Gender" class="form-label">Gender</label>
+              <input type="text" class="form-control" id="Gender" name="Gender" autocomplete="off" placeholder="Gender">
+            </div>
+            <div class="mb-3">
+              <label for="Occupancy" class="form-label">Occupancy</label>
+              <input type="text" class="form-control" id="Occupancy" name="Occupancy" autocomplete="off" placeholder="Occupancy">
+            </div>
+            <div class="mb-3">
+              <label for="Salary" class="form-label">Salary</label>
+              <input type="text" class="form-control" id="Salary" name="Salary" autocomplete="off" placeholder="Salary">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Edit Data</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script>
+    $(document).ready(function () {
+      $(".deleteCustomer").on("click", function (e) {
+          e.preventDefault()
+          var myModalDelete = new bootstrap.Modal(document.getElementById("modalDelete"))
+          myModalDelete.show()
+
+          $("#uNameDeleted").text($(this).data("name"))
+          $("#idCustomerDelete").val($(this).data("id"));
+
+          $("#formDeleteCustomer").off("submit")
+          $("#formDeleteCustomer").on("submit", function (e) {
+              e.preventDefault()
+              let formDataDeleteCustomer = new FormData(document.getElementById("formDeleteCustomer"))
+              $.ajax({
+                  url: "/Customer/DeleteCustomer",
+                  type: "delete",
+                  data: formDataDeleteCustomer,
+                  contentType: false,
+                  processData: false,
+                  headers: {
+                      "RequestVerificationToken": $('#formDeleteCustomer input:hidden[name="__RequestVerificationToken"]').val()
+                  },
+                  success: function (res) {
+                      console.log("Berhasil Delete Data");
+                      myModalDelete.hide();
+                      window.location.href = "/Customer/Index";
+                  },
+                  error: function (jqXHR) {
+                      console.log(jqXHR.responseText);
+                  }
+              })
+          })
+      })
+
+      $(".editCustomer").on("click", function (e) {
+          e.preventDefault();        
+          var myModal = new bootstrap.Modal(document.getElementById("modalEdit"))
+          myModal.show();
+          
+          $("#Id").val($(this).data("id"));
+          $("#Name").val($(this).data("name"));
+          $("#Email").val($(this).data("email"));
+          $("#Address").val($(this).data("address"));
+          $("#Gender").val($(this).data("gender"));
+          $("#Occupancy").val($(this).data("occupancy"));
+          $("#Salary").val($(this).data("salary"));
+
+          $("#formEditCustomer").off("submit");
+          $("#formEditCustomer").on("submit", function (e) {
+              e.preventDefault();
+              let formDataEditCustomer = new FormData(document.getElementById("formEditCustomer"))
+              $.ajax({
+                  url: "/Customer/EditCustomer",
+                  type: "post",
+                  data: formDataEditCustomer,
+                  contentType: false,
+                  processData: false,
+                  headers: {
+                      "RequestVerificationToken": $('#formEditCustomer input:hidden[name="__RequestVerificationToken"]').val()
+                  },
+                  success: function (res) {
+                    console.log("Berhasil Edit Data");
+                    myModal.hide();
+                    window.location.href = "/Customer/Index";
+                  },
+                  error: function (jqXHR) {
+                    console.log(jqXHR.ResponseText);
+                  }
+              })
+          })
+      })
+    })
+  </script>
+}

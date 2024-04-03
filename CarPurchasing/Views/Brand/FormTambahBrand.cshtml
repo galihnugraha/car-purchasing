@@ -1,0 +1,33 @@
+@model CarPurchasing_DAL.Models.Dto.Req.ReqBrandDto
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Brand";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Tambah Data Brand</h1>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container">
+
+        <form asp-controller="Brand" asp-action="TambahBrand" method="post" class="mt-5">
+          <input type="hidden" asp-for="Id" value="0"/>
+          <div class="mb-3">
+            <label for="name" class="form-label">name</label>
+            <input type="text" class="form-control" id="name" asp-for="Name" autocomplete="off" placeholder="name">
+          </div>
+          <div class="mb-3">
+            <label for="country" class="form-label">country</label>
+            <input type="text" class="form-control" id="country" asp-for="Country" autocomplete="off" placeholder="country">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </section>
+    <!-- /.content -->
+</div>

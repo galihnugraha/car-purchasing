@@ -1,0 +1,246 @@
+@model List<CarPurchasing_DAL.Models.Dto.Res.ResTagihanDto>
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "List Tagihan";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Halaman ListTagihan</h1>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nama Customer</th>
+            <th scope="col">Nama Brand</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var dataTagihan in Model)
+          {
+            <tr>
+              <td>@dataTagihan.NamaCust</td>
+              <td>@dataTagihan.NamaBrand</td>
+                <td>
+                  <a 
+                    data-id-bayar="@dataTagihan.Id" 
+                    data-tenor="@dataTagihan.Tenor"
+                    data-down-payment="@dataTagihan.DownPayment"
+                    data-tax="@dataTagihan.Tax"
+                    data-price="@dataTagihan.Price"
+                    data-payment-status="@dataTagihan.PaymentStatus"
+                    data-nama-brand="@dataTagihan.NamaBrand"
+                    data-nama-model="@dataTagihan.NamaModel"
+                    data-nama-cust="@dataTagihan.NamaCust"
+                    data-car-id="@dataTagihan.CarId"
+                    data-cust-id="@dataTagihan.CustId"
+                    href="#" class="btn btn-warning bayarTagihan"
+                  >Bayar</a>
+                  <a 
+                    data-id-delete="@dataTagihan.Id" 
+                    data-nama-brand="@dataTagihan.NamaBrand"
+                    data-nama-model="@dataTagihan.NamaModel"
+                    data-nama-cust="@dataTagihan.NamaCust"
+                    href="#" class="btn btn-danger deleteTagihan"
+                  >Batal</a>
+                </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form method="post" id="formDeleteTagihan">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Apakah yakin ingin menghapus tagihan <b id="uNameDeleted"></b> mobil <b id="uBrandDeleted"></b> <b id="uModelDeleted"></b>?
+          <input type="hidden" name="Id" id="idTagihanDelete">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger">Hapus Data</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalBayar">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" id="formBayarTagihan">
+        <div class="modal-header">
+            <h5 class="modal-title">Konfirmasi Edit</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="Id" id="idTagihanBayar" />
+          <input type="hidden" name="Tenor" id="tenorTagihanBayar" />
+          <input type="hidden" name="DownPayment" id="downPaymentTagihanBayar" />
+          <input type="hidden" name="Tax" id="taxTagihanBayar" />
+          <input type="hidden" name="Price" id="priceTagihanBayar" />
+          <input type="hidden" name="PaymentStatus" id="paymentStatusTagihanBayar" value="PAID"/>
+          <input type="hidden" name="CarId" id="carIdTagihanBayar" />
+          <input type="hidden" name="CustId" id="custIdTagihanBayar" />
+            <div class="container">
+              <div class="mb-3 row">
+                  <p>Nama Customer : </p>
+                  <label class="form-label" id="bayarNamaCust"></label>
+              </div>
+              <div class="mb-3 row">
+                  <p>Brand/Type : </p>
+                  <label class="form-label" id="bayarNamaBrand"></label>
+                  <label class="form-label" id="bayarNamaModel"></label>
+              </div>
+              <div class="mb-3 row">
+                <p>Tenor : </p>
+                <label class="form-label" id="bayarTenor"></label>
+              </div>
+              <div class="mb-3 row">
+                <p>Down Payment : </p>
+                <label class="form-label" id="bayarDownPayment"></label>
+              </div>
+              <div class="mb-3 row">
+                  <p>Price : </p>
+                  <label class="form-label" id="bayarPrice"></label>
+              </div>
+              <div class="mb-3 row">
+                  <p>Tax : </p>
+                  <label class="form-label" id="bayarTax"></label>
+              </div>
+              <div class="mb-3 row">
+                  <p>Payment Status : </p>
+                  <label class="form-label" id="bayarPaymentStatus"></label>
+              </div>
+              
+            </div> 
+          </div>  
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Bayar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script>
+    $(document).ready(function () {
+      $(".deleteTagihan").on("click", function (e) {
+          e.preventDefault();
+          var idDelete = $(this).data("idDelete");
+          var namaCust = $(this).data("namaCust");
+          var namaBrand = $(this).data("namaBrand");
+          var namaModel = $(this).data("namaModel");
+
+          var myModalDelete = new bootstrap.Modal(document.getElementById("modalDelete"))
+          myModalDelete.show();
+          $("#uNameDeleted").text(namaCust);
+          $("#uBrandDeleted").text(namaBrand);
+          $("#uModelDeleted").text(namaModel);
+
+          $("#idTagihanDelete").val(idDelete);
+
+          $("#formDeleteTagihan").off("submit");
+          $("#formDeleteTagihan").on("submit", function (e) {
+              e.preventDefault();
+              let formDataDeleteTagihan = new FormData(document.getElementById("formDeleteTagihan"))
+              $.ajax({
+                  url: "/Tagihan/DeleteTagihan",
+                  type: "delete",
+                  data: formDataDeleteTagihan,
+                  contentType: false,
+                  processData: false,
+                  headers: {
+                      "RequestVerificationToken": $('#formDeleteTagihan input:hidden[name="__RequestVerificationToken"]').val()
+                  },
+                  success: function (res) {
+                      console.log("Berhasil Delete Tagihan");
+                      myModalDelete.hide();
+                      window.location.href = "/Tagihan/ListTagihan";
+                  },
+                  error: function (jqXHR) {
+                      console.log(jqXHR.ResponseText);
+                  }
+              })
+          })
+      })
+
+      $(".bayarTagihan").on("click", function (e) {
+          e.preventDefault();
+          var idBayar = $(this).data("idBayar");
+          var tenor = $(this).data("tenor");
+          var downPayment = $(this).data("downPayment");
+          var tax = $(this).data("tax");
+          var price = $(this).data("price");
+          var paymentStatus = $(this).data("paymentStatus");
+          var carId = $(this).data("carId");
+          var custId = $(this).data("custId");
+          var namaCust = $(this).data("namaCust");
+          var namaBrand = $(this).data("namaBrand");
+          var namaModel = $(this).data("namaModel");
+
+          $("#bayarNamaCust").text(namaCust);
+          $("#bayarNamaBrand").text(namaBrand);
+          $("#bayarNamaModel").text(namaModel);
+          $("#bayarTenor").text(tenor);
+          $("#bayarDownPayment").text(downPayment);
+          $("#bayarPrice").text(price);
+          $("#bayarTax").text(tax);
+          $("#bayarPaymentStatus").text(paymentStatus);
+
+          var myModal = new bootstrap.Modal(document.getElementById("modalBayar"))
+          myModal.show();
+      
+          $("#idTagihanBayar").val(idBayar);
+          $("#tenorTagihanBayar").val(tenor);
+          $("#downPaymentTagihanBayar").val(downPayment);
+          $("#taxTagihanBayar").val(tax);
+          $("#priceTagihanBayar").val(price);
+          $("#carIdTagihanBayar").val(carId);
+          $("#custIdTagihanBayar").val(custId);
+
+          $("#formBayarTagihan").off("submit");
+          $("#formBayarTagihan").on("submit", function (e) {
+              e.preventDefault();
+              let formDataBayarTagihan = new FormData(document.getElementById("formBayarTagihan"))
+              $.ajax({
+                  url: "/Tagihan/BayarTagihan",
+                  type: "post",
+                  data: formDataBayarTagihan,
+                  contentType: false,
+                  processData: false,
+                  headers: {
+                      "RequestVerificationToken": $('#formBayarTagihan input:hidden[name="__RequestVerificationToken"]').val()
+                  },
+                  success: function (res) {
+                    console.log("Berhasil Bayar");
+                    myModal.hide();
+                    window.location.href = "/Mobil/ListMobil";
+                  },
+                  error: function (jqXHR) {
+                    console.log(jqXHR.ResponseText);
+                  }
+              })
+          })
+      })
+    })
+  </script>
+}

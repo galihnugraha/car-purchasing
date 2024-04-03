@@ -1,0 +1,20 @@
+@{
+  Layout = "_LayoutLogin";
+  ViewData["Title"] = "Login Page";
+}
+
+<h1 class="my-5">Login</h1>
+@* <form method="post" asp-controller="Auth" asp-action="CheckLogin" class="mt-5"> *@
+  <div class="mb-3">
+    <label class="form-label">username</label>
+    @* <input type="text" class="form-control" asp-for="Username"> *@
+    <input type="text" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">password</label>
+    @* <input type="text" class="form-control" asp-for="Password"> *@
+    <input type="password" class="form-control">
+  </div>
+  @* <button type="submit" class="btn btn-primary">Login</button> *@
+  <a asp-controller="Mobil" asp-action="Index" class="btn btn-primary">Login</a>
+@* </form> *@

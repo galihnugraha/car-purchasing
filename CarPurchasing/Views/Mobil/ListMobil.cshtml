@@ -1,0 +1,213 @@
+@model List<CarPurchasing_DAL.Models.Dto.Res.ResCarDto>
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "List Mobil";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Halaman List Mobil</h1>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nama Brand</th>
+            <th scope="col">Nama Model</th>
+            <th scope="col">Cd Engine</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var dataCar in Model)
+          {
+            <tr>
+              <td>@dataCar.NamaBrand</td>
+              <td>@dataCar.NamaModel</td>
+              <td>@dataCar.CdEngine</td>
+                <td>
+                  <a 
+                    data-engine-size="@dataCar.EngineSize"
+                    data-fuel-type="@dataCar.FuelType"
+                    data-manufacture-year="@dataCar.ManufactureYear"
+                    data-cd-chassis="@dataCar.CdChassis"
+                    data-cd-engine="@dataCar.CdEngine"
+                    data-nama-brand="@dataCar.NamaBrand"
+                    data-nama-type="@dataCar.NamaType"
+                    data-nama-usage="@dataCar.NamaUsage"
+                    data-nama-model="@dataCar.NamaModel"
+                    href="#" class="btn btn-warning detailCar">Detail
+                  </a>
+                  <a 
+                    data-id-beli="@dataCar.Id"
+                    href="#" class="btn btn-primary beliCar">Beli
+                  </a>
+                </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    <!-- /.content -->
+</div>
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="modalDetail">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        
+        <div class="modal-header">
+            <h5 class="modal-title">Car Detail</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="mb-3 row">
+              <p>Engine Size : </p>
+              <label class="form-label" id="detailEngineSize"></label>
+            </div>
+            <div class="mb-3 row">
+              <p>Fuel Type : </p>
+              <label class="form-label" id="detailFuelType"></label>
+            </div>
+            <div class="mb-3 row">
+                <p>Manufacture Year : </p>
+                <label class="form-label" id="detailManufactureYear"></label>
+            </div>
+            <div class="mb-3 row">
+                <p>Cd Chassis : </p>
+                <label class="form-label" id="detailCdChassis"></label>
+            </div>
+            <div class="mb-3 row">
+                <p>Cd Engine : </p>
+                <label class="form-label" id="detailCdEngine"></label>
+            </div>
+            <div class="mb-3 row">
+                <p>Nama Brand : </p>
+                <label class="form-label" id="detailNamaBrand"></label>
+            </div>
+            <div class="mb-3 row">
+                <p>Nama Type : </p>
+                <label class="form-label" id="detailNamaType"></label>
+            </div>
+            <div class="mb-3 row">
+                <p>Nama Usage : </p>
+                <label class="form-label" id="detailNamaUsage"></label>
+            </div>
+            <div class="mb-3 row">
+                <p>Nama Model : </p>
+                <label class="form-label" id="detailNamaModel"></label>
+            </div>
+          </div> 
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="modalBeli">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" id="formBeliCar">
+        <div class="modal-header">
+            <h5 class="modal-title">Konfirmasi Beli Mobil</h5>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="CarId" id="CarId" />
+            <input type="hidden" name="PaymentStatus" id="PaymentStatus" value="BOOKED" />
+            <div class="mb-3">
+                <label class="form-label">Tenor</label>
+                <input type="text" class="form-control" name="Tenor" id="Tenor" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Down Payment</label>
+                <input type="text" class="form-control" name="DownPayment" id="DownPayment" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Price</label>
+                <input type="text" class="form-control" id="Price"  name="Price"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">
+                  Customer
+              </label>
+              <select class="form-select custom-select" id="CustId" name="CustId">
+                  <option value="0">--Select Customer--</option>
+                  @foreach (var customer in ViewBag.dataCustomer)
+                  {
+                    <option value="@customer.Id">@customer.Name</option>
+                  }
+              </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Beli!</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <script>
+    $(document).ready(function () {
+      $(".detailCar").on("click", function (e) {
+          e.preventDefault();
+          var myModalDetail = new bootstrap.Modal(document.getElementById("modalDetail"))
+          myModalDetail.show();
+
+          $("#detailEngineSize").text($(this).data("engineSize"))
+          $("#detailFuelType").text($(this).data("fuelType"))
+          $("#detailManufactureYear").text($(this).data("manufactureYear"))
+          $("#detailCdChassis").text($(this).data("cdChassis"))
+          $("#detailCdEngine").text($(this).data("cdEngine"))
+          $("#detailNamaBrand").text($(this).data("namaBrand"))
+          $("#detailNamaType").text($(this).data("namaType"))
+          $("#detailNamaUsage").text($(this).data("namaUsage"))
+          $("#detailNamaModel").text($(this).data("namaModel"))    
+      })
+
+      $(".beliCar").on("click", function (e) {
+          e.preventDefault();        
+          var myModal = new bootstrap.Modal(document.getElementById("modalBeli"))
+          myModal.show();
+          
+          $("#CarId").val($(this).data("idBeli"));
+
+          $("#formBeliCar").off("submit");
+          $("#formBeliCar").on("submit", function (e) {
+              e.preventDefault();
+              let formDataBeliCar = new FormData(document.getElementById("formBeliCar"))
+              $.ajax({
+                  url: "/Tagihan/TambahTagihan",
+                  type: "post",
+                  data: formDataBeliCar,
+                  contentType: false,
+                  processData: false,
+                  headers: {
+                      "RequestVerificationToken": $('#formBeliCar input:hidden[name="__RequestVerificationToken"]').val()
+                  },
+                  success: function (res) {
+                    console.log("Berhasil Tambah Tagihan");
+                    myModal.hide();
+                    window.location.href = "/Tagihan/ListTagihan";
+                  },
+                  error: function (jqXHR) {
+                    console.log(jqXHR.ResponseText);
+                  }
+              })
+          })
+      })
+    })
+  </script>
+}

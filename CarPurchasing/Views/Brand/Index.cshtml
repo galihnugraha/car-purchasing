@@ -1,0 +1,46 @@
+@model List<CarPurchasing_DAL.Models.Dto.Res.ResBrandDto>
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Brand";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Halaman Master Brand</h1>
+    </div>
+    <div class="content text-right">
+      <a asp-controller="Brand" asp-action="FormTambahBrand" class="btn btn-primary">Tambah Data</a>
+    </div>
+    <br>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Country</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var dataBrand in Model)
+          {
+            <tr>
+              <td>@dataBrand.Name</td>
+              <td>@dataBrand.Country</td>
+              @*
+                <td>
+                    <a data-id="@dataBrand.Id" data-username="@dataBrand.Carname" href="#" class="btn btn-danger deleteCar">Delete</a>
+                    <a data-id="@dataBrand.Id" data-username="@dataBrand.Carname" href="#" class="btn btn-primary editCar">Edit</a>
+                </td>
+              *@
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    <!-- /.content -->
+</div>

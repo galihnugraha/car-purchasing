@@ -1,0 +1,44 @@
+@model List<CarPurchasing_DAL.Models.Dto.Res.ResUsageDto>
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Usage";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Halaman Master Usage</h1>
+    </div>
+    <div class="content text-right">
+      <a asp-controller="Usage" asp-action="FormTambahUsage" class="btn btn-primary">Tambah Data</a>
+    </div>
+    <br>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var dataUsage in Model)
+          {
+            <tr>
+              <td>@dataUsage.Name</td>
+              @*
+                <td>
+                    <a data-id="@dataBrand.Id" data-username="@dataBrand.Carname" href="#" class="btn btn-danger deleteCar">Delete</a>
+                    <a data-id="@dataBrand.Id" data-username="@dataBrand.Carname" href="#" class="btn btn-primary editCar">Edit</a>
+                </td>
+              *@
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+    <!-- /.content -->
+</div>

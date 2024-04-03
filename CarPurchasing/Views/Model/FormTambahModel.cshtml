@@ -1,0 +1,41 @@
+@model CarPurchasing_DAL.Models.Dto.Req.ReqModelDto
+@{
+  Layout = "_LayoutAdmin";
+  ViewData["Title"] = "Master Model";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <h1>Tambah Data Model</h1>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container">
+
+        <form asp-controller="Model" asp-action="TambahModel" method="post" class="mt-5">
+          <input type="hidden" asp-for="Id" value="0"/>
+          <div class="mb-3">
+            <label for="name" class="form-label">name</label>
+            <input type="text" class="form-control" id="name" asp-for="Name" autocomplete="off" placeholder="name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+                Type
+            </label>
+            <select class="form-select custom-select" asp-for="BrandId">
+                <option value="0">--Select Brand--</option>
+                @foreach (var brand in ViewBag.dataBrand)
+                {
+                    <option value="@brand.Id">@brand.Name</option>
+                }
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </section>
+    <!-- /.content -->
+</div>
